@@ -1,45 +1,29 @@
 
 function loadPage() {
-	let slidesPath = "./assets/images/slideshow/" ; 
-
 	// initialize slide-tagline 01
-	createSlideTagline (slides, 0, slidesPath) ;
+	genSlideTagline (slides, 0, slidesPath) ;
+
+	// initialize bullets at slide 01
+	generateBullets() ; 
 
 	// click events listening on arrows left / right (slide change)
+	// arrow left
 	let leftArr = document.querySelector (".arrow_left") ; 
-	leftArr.addEventListener ("click" , () => { alert("Le clic gauche fonctionne") ; } ) ; 
-
-
-	// ------- TESTS ARROW RIGHT -------
-
-	let rightArr = document.querySelector(".arrow_right"); 
-
-	rightArr.addEventListener ("click" , () => { 
-		// current slide
-		let curtSlide = currentSlide() ; 
-
-		// current index where slide is in array
-		let index = findArrIndex(slides, "image" , curtSlide) ; 
-
-		if ( index < slides.length ) { 
-			// index increment
-			index++ ; 	
-
-			// display slide at incremented index
-			document.querySelector(".banner-img").src = slidesPath + slides[index].image ; 
-		} 
-
-
+	leftArr.addEventListener ("click" , () => { 
+		moveBack(slidesPath) ; 
 	} ) ; 
 
-	
-
-
-
+	// arrow right
+	let rightArr = document.querySelector(".arrow_right"); 
+	rightArr.addEventListener ("click" , () => { 
+		moveNext(slidesPath) ; 
+	} ) ; 
 }
 
-function createSlide ( path , arrIndex) {
-/* 	Function to create and display a slide on home page
+// ------- GENERATE SLIDES -------
+
+function genSlide ( path , arrIndex) {
+/* 	Function to generate and display a slide on home page
 	Parameters : 2 
 		-> slide file absolute path (type = string)
 		-> slide file name (type = string)
@@ -51,8 +35,8 @@ function createSlide ( path , arrIndex) {
 	parentElt.appendChild(slide) ;
 }
 
-function createTagline (array , arrIndex) {
-/* 	Function to create and display a tagline on home page
+function genTagline (array , arrIndex) {
+/* 	Function to generate and display a tagline on home page
 Parameters : 2 
 	-> array containing tagline
 	-> array index where tagline is
@@ -65,16 +49,39 @@ Parameters : 2
 	document.querySelector("#banner p").innerHTML = `${taglineString}` ; 
 }
 
-function createSlideTagline (array, arrayIndex, path) {
+function genSlideTagline (array, arrayIndex, path) {
 // Function to display a slide with a tagline on it (home page)
-	createSlide (path, arrayIndex) ; 
-	createTagline (array, arrayIndex) ; 
+	genSlide (path, arrayIndex) ; 
+	genTagline (array, arrayIndex) ; 
 }
 
+// -------  GENERATE BULLETS  -------
+
+function generateBullets () {
+	// initialize full bullet associated with 1st slide, at index 0 of "slides" array
+	let fullBullet = document.createElement ("div") ; 
+	fullBullet.setAttribute ("id" , "bullet0") ; // bullet id value = "bullet" + "slides" array index number
+	fullBullet.classList.add("dot_selected") ;  
+	dotsContainer.appendChild(fullBullet) ;
+
+	let i = 1; // 1st bullet (id = slide0) already declared
+	let emptyBulletString = "" ; 
+	let emptyBulletsNb = slides.length-1 ; 
+	
+ 	while (i <= emptyBulletsNb ) {
+		emptyBulletString = "<div class='dot' id='bullet" + i + "'></div>" ; // bullet id value = "bullet" + "slides" array index number
+
+		// insert new empty bullet after container last child
+		dotsContainer.insertAdjacentHTML("beforeend" , emptyBulletString) ; 
+		i++ ;  
+	} 
+}
+
+//  -------  UPDATE SLIDES  -------
 const currentSlide = () => {
 /* 	Function to detect current banner slide name (file name without extension)
 	Parameters : none.
-	Return : file name of slide without extension.
+	Return : array with file name of slide without extension, at index 0.
 */
 	// catch current innerHTML image 
 	let bannerImgObj = document.querySelector ("#banner img[class='banner-img']") ;  
@@ -100,36 +107,100 @@ const findArrIndex = (array , objKey , slideName) => {
 		-> slide picture to search for (slide file name without extension, type = string)
 	Return : array index where slide found
 */
-	const indexFound = array.findIndex ( (tabElt) => {
-		const fileName = tabElt[objKey].split(".") [0] ;
-		return fileName.includes(slideName) ;   // string.includes
+	const indexFound = array.findIndex ( 
+		(tabElt) => {
+			const fileName = tabElt[objKey].split(".") [0] ; // extract slide file name without extension
+			return fileName.includes(slideName) ;   // string.includes
 	} ) ;
 
 	return indexFound;
 }
 
-const moveNext = (previousIndex , newIndex) => {
-
-	document.querySelector(".banner-img").src = slidesPath + slides[index].image ; 
+const changeSlide = (array , newIndex , slidesPath) => {
+	document.querySelector(".banner-img").src = slidesPath + array[newIndex].image ; 
 }
 
+const changeTagline = (array , newIndex) => {
+	document.querySelector ("#banner p").innerHTML = array[newIndex].tagLine ; 
+}
 
+const changeSlideTagline = (array , newIndex , slidesPath) => {  
+	changeSlide (array , newIndex , slidesPath) ; 
+	changeTagline (array , newIndex) ; 
+}
 
+// -------  UPDATE BULLETS  -------
 
-// ----------------------------------------------
+const toEmptyBullet = () => {
+	/* Function that detects the full bullet and turns it into empty one. 
+		Parameters : none. 
+		Return : none (change made directly in DOM by changing element className)
+	*/
+		  let fullBullet = document.querySelector (".dots .dot_selected"); 
+		  fullBullet.classList.replace("dot_selected" , "dot") ; 
+	}
+	
+const toFullBullet = (index) => {
+/* Function t
+	Parameters : 1 -> index
+	Return : none (change made directly in DOM by changing element className)
+*/
+	let bulletId = "#bullet" + index ; 
+	let emptyBullet = document.querySelector(bulletId) ; 
+	emptyBullet.classList.replace("dot" , "dot_selected") ;
+}
 
-// Function to move to previous slide
-	// if slide is 1st one, move to last slide
-		// count number of slides in array of slides pix
+// -------  UPDATE SLIDES + BULLETS  -----
+// Functions listened to by arrows event listeners 
+const moveNext = (slidesPath) => { 
 
+	// catch current slide object
+	let curtSlide = currentSlide() ;  
 
-// -------  BULLETS  ------- 
+	// Slide current index in array (object image key)
+	let index = findArrIndex(slides, "image" , curtSlide) ; 
 
-//	Number of bullets in .dots container
-let dotsContainer = document.querySelector(".dots") ; 
-let eltsCount = dotsContainer.childElementCount ; 
-console.log ("Il y a " + eltsCount + " bullets dans le conteneur.") ; 
+	// if current slide is not the last one in array
+	if ( index < slidesMaxIndex ) { 
+		// index increment
+		index++ ;  
 
+		// display slide at incremented index in "slides" array
+		changeSlideTagline (slides , index , slidesPath) ; 
+
+		toEmptyBullet(); 
+		toFullBullet(index); 
+
+	// else, if current slide is the last one in array
+	} else { 
+		index = 0 ; 
+		// back to first slide
+		changeSlideTagline (slides , index , slidesPath) ; 
+		toEmptyBullet() ; 
+		toFullBullet(index) ; 
+	}
+}
+
+const moveBack = (slidesPath) => {
+	// local variables : 
+	let lastIndex = slides.length-1 ; // last "slides" array index
+	let curtSlide = currentSlide() ;  // current slide object
+	let index = findArrIndex(slides, "image" , curtSlide) ; // Slide current index in array (object image key)
+
+	if (index === 0) {
+		changeSlideTagline (slides , slidesMaxIndex , slidesPath) ; 
+		toEmptyBullet() ;  
+		toFullBullet(lastIndex) ; 
+	}else{
+		// index decrement
+		index-- ;  
+
+		// display slide at incremented index
+		changeSlideTagline (slides , index , slidesPath) ; 
+		toEmptyBullet() ; 
+		toFullBullet(index) ; 
+	}
+}
 
 
 

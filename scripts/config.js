@@ -16,3 +16,9 @@ const slides = [
 		"tagLine":"Autocollants <span>avec découpe laser sur mesure</span>"
 	}
 ]
+
+// global variables
+let slidesPath = "./assets/images/slideshow/" ; 
+let slidesMaxIndex = (slides.length) -1 ; 
+let dotsContainer = document.getElementsByClassName("dots")[0] ; 
+let dotsNb = slidesMaxIndex ; 
