@@ -18,6 +18,8 @@ function loadPage() {
 	rightArr.addEventListener ("click" , () => { 
 		moveNext(slidesPath) ; 
 	} ) ; 
+
+	startSlideshow() ; 
 }
 
 // ------- GENERATE SLIDES -------
@@ -150,7 +152,7 @@ const toFullBullet = (index) => {
 	emptyBullet.classList.replace("dot" , "dot_selected") ;
 }
 
-// -------  UPDATE SLIDES + BULLETS  -----
+// -------  ARROWS EVENT FUNCTIONS  -----
 // Functions listened to by arrows event listeners 
 const moveNext = (slidesPath) => { 
 
@@ -202,6 +204,31 @@ const moveBack = (slidesPath) => {
 	}
 }
 
+// -------  SLIDE SHOW  -------
 
+const startSlideshow = () => {
+	setInterval(slideShow , 2000) ; 
+}
 
+function slideShow () {
+		// catch current slide object
+		let curtSlide = currentSlide() ;  
+
+		// Slide current index in array (object image key)
+		let index = findArrIndex(slides, "image" , curtSlide) ; 
+
+		if (index === slides.length-1) {
+			index = 0 ; 
+		} else {
+			index ++ ;
+		}
+
+		// document.querySelector(".banner-img").src = slidesPath + slides[index].image ;
+		changeSlide(slides , index , slidesPath) ; 
+
+		changeTagline(slides, index) ; 
+
+		toEmptyBullet() ; 
+		toFullBullet(index) ;
+}
 

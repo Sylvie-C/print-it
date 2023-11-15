@@ -31,40 +31,50 @@ time, mark, audio, video {
 	font-size: 100%;
 	vertical-align: baseline;
 }
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+
 body {
 	line-height: 1;
 }
+
 ol, ul {
 	list-style: none;
 }
+
 blockquote, q {
 	quotes: none;
 }
+
 blockquote:before, blockquote:after,
 q:before, q:after {
 	content: none;
 }
+
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
 body {
 
 }
+
 section {
 	margin-block: 6em;
 }
+
 h2 {
 	font-family: 'Roboto Slab', sans-serif;
 	font-size: 40px;
 	font-weight: 900;
 	margin-block: 1em;
 }
+
 h3{
 	font-family: 'Roboto Slab', sans-serif;
 	font-size: 22px;
@@ -77,16 +87,19 @@ p, li {
 	font-size: 16px;
 	line-height: 26px;
 }
+
 .container {
 	max-width: 1440px;
 	margin-inline:auto;
 	padding-inline: 5%;
 }
+
 header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
+
 .logo{
 	width: 260px;
 	margin-block: 10px;
@@ -100,6 +113,7 @@ header {
 	color: white;
 	text-decoration: none;
 }
+
 .devis {
 	background-color: var(--secondary-color);
 }
@@ -121,6 +135,7 @@ header {
 	object-fit: cover;
 	object-position: center;
 }
+
 /* Code CSS en prévision de l'ajout d'un carousel pour la bannière */
 /* Gestion des fleches du carrousel */
 
@@ -257,7 +272,6 @@ header {
 #contact article, #contact div {
 	flex:1;
 }
-
 
 #contact .container {
 	flex-direction: row;
