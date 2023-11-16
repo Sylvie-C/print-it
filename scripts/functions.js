@@ -18,8 +18,6 @@ function loadPage() {
 	rightArr.addEventListener ("click" , () => { 
 		moveNext(slidesPath) ; 
 	} ) ; 
-
-	startSlideshow() ; 
 }
 
 // ------- GENERATE SLIDES -------
