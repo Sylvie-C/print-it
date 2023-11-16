@@ -187,14 +187,13 @@ const moveNext = (slidesPath) => {
 
 const moveBack = (slidesPath) => {
 	// local variables : 
-	let lastIndex = slides.length-1 ; // last "slides" array index
 	let curtSlide = currentSlide() ;  // current slide object
 	let index = findArrIndex(slides, "image" , curtSlide) ; // Slide current index in array (object image key)
 
 	if (index === 0) {
 		changeSlideTagline (slides , slidesMaxIndex , slidesPath) ; 
 		toEmptyBullet() ;  
-		toFullBullet(lastIndex) ; 
+		toFullBullet(slidesMaxIndex) ; 
 	}else{
 		// index decrement
 		index-- ;  
