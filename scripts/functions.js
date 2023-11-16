@@ -80,6 +80,7 @@ function generateBullets () {
 }
 
 //  -------  UPDATE SLIDES  -------
+
 const currentSlide = () => {
 /* 	Function to detect current banner slide name (file name without extension)
 	Parameters : none.
@@ -112,7 +113,7 @@ const findArrIndex = (array , objKey , slideName) => {
 	const indexFound = array.findIndex ( 
 		(tabElt) => {
 			const fileName = tabElt[objKey].split(".") [0] ; // extract slide file name without extension
-			return fileName.includes(slideName) ;   // Array.includes
+			return fileName.includes(slideName) ;   // String.includes
 	} ) ;
 
 	return indexFound;
@@ -158,7 +159,6 @@ const moveNext = (slidesPath) => {
 
 	// catch current slide object
 	let curtSlide = currentSlide() ;  
-	console.log (curtSlide) ; 
 
 	// Slide current index in array (object image key)
 	let index = findArrIndex(slides, "image" , curtSlide) ; 
